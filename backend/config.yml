@@ -19,6 +19,7 @@ models:
     adapter: dummy
     params:
       fixed_response: "OK: dummy translation"
+      
   es-en-tiny:
     adapter: pytorch_hf
     params:
