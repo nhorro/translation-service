@@ -1,0 +1,45 @@
+server:
+  host: 0.0.0.0
+  port: 8080
+
+defaults:
+  adapter: dummy               # default if "model" not provided
+  generation:
+    max_new_tokens: 256
+    num_beams: 4
+    do_sample: false
+
+huggingface:
+  token: ${HF_TOKEN:-} 
+  cache_dir: ./hf_cache
+
+models:
+  # Logical names → adapter + adapter-specific params
+  dummy:
+    adapter: dummy
+    params:
+      fixed_response: "OK: dummy translation"
+  es-en-tiny:
+    adapter: pytorch_hf
+    params:
+      model_id: Helsinki-NLP/opus-mt-es-en
+      device: auto         # or "auto"
+      dtype: float16       # Runs in RTX3070
+  
+  # LOCAL (no network): en -> es Marian
+  en-es-local:
+    adapter: pytorch_hf
+    params:
+      model_path: ./hf_models/opus-mt-en-es     # <— local folder
+      device: auto
+      dtype: auto
+
+  # LOCAL (gated downloaded): es -> en NLLB
+  es-en-nllb600m-local:
+    adapter: pytorch_hf
+    params:
+      model_path: ./hf_models/nllb-200-distilled-600M
+      device: auto
+      dtype: auto
+      src_lang: spa_Latn
+      tgt_lang: eng_Latn
