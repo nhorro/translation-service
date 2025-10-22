@@ -4,8 +4,6 @@ The backend is a FastAPI powered standard HTTP endpoint.
 
 ## API specification
 
-Awesome—here’s a clean, copy-pasteable spec for your backend.
-
 ### Base
 
 * **Base URL:** `http://<host>:<port>` (e.g., `http://localhost:8080`)
