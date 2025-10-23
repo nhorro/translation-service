@@ -54,3 +54,15 @@ models:
       compute_type: int8_float16
       num_threads: 0          # 0 or omit → CT2 decides; set >0 to pin CPU threads
 
+  es-en-ct2-auto:
+    adapter: ctranslate2_hf
+    params:
+      transformers_model_id: Helsinki-NLP/opus-mt-es-en   # small, public
+      auto_convert_if_missing: true
+      tokenizer_id: Helsinki-NLP/opus-mt-es-en            # use same tokenizer
+      ct2_cache_subdir: ct2/opus-mt-es-en-int8f16         # where to store converted dir
+      device: auto
+      compute_type: int8_float16
+
+
+
