@@ -57,14 +57,14 @@ def copy_to_clipboard_js(text: str):
 
 # ---- App --------------------------------------------------------------------
 def main():
-    st.set_page_config(page_title="Translator UI (es→en)", page_icon="🌐", layout="centered")
-    st.title("Translator UI (es → en)")
-    st.caption("Using FastAPI backend `/models` and `/translate`")
+    st.set_page_config(page_title="Demostración de traductor (esp-ing)", page_icon="🌐", layout="wide")
+    st.title("Traductor español a inglés")
+    st.caption("Traductor de español a inglés usando un servicio de backend *on-premise*.")
 
     # Sidebar: backend URL + controls
     st.sidebar.header("Backend")
     api_base = st.sidebar.text_input("API base URL", value="http://localhost:8080").rstrip("/")
-    refresh = st.sidebar.button("Refresh model list")
+    refresh = st.sidebar.button("Refrescar lista de modelos", use_container_width=True)
 
     # Fetch /models
     models_payload: Dict[str, Any] = {}
@@ -73,7 +73,7 @@ def main():
         r.raise_for_status()
         models_payload = r.json()
     except Exception as e:
-        st.error(f"Failed to fetch {api_base}/models: {e}")
+        st.error(f"Falla al descargar {api_base}/models: {e}")
         st.stop()
 
     # Derive ES->EN list
@@ -84,12 +84,12 @@ def main():
     es_en_names = filter_es_to_en(model_items)
 
     if not es_en_names:
-        st.warning("No es→en models found in /models. "
-                   "Tip: name your models with 'es-en' or provide src_lang=tgt_lang in config.")
+        st.warning("No se encontraron modelos de traducción español a inglés en /models. "
+                   "Tip: nombrar los modelos con 'es-en' o proveer src_lang=tgt_lang en configuración.")
         st.json(models_payload)  # show what we got for debugging
         st.stop()
 
-    model_name = st.selectbox("Model", options=es_en_names, index=0)
+    model_name = st.selectbox("Modelo", options=es_en_names, index=0)
 
     in_text = st.text_area(
         "Spanish text",
@@ -99,7 +99,7 @@ def main():
 
     col1, col2 = st.columns([1, 2])
     with col1:
-        run_btn = st.button("Translate", type="primary", use_container_width=True)
+        run_btn = st.button("Traducir", type="primary", use_container_width=True)
     with col2:
         t_label = st.empty()  # latency label
 
@@ -109,7 +109,7 @@ def main():
 
     if run_btn:
         if not in_text.strip():
-            st.warning("Please enter some Spanish text.")
+            st.warning("Por favor ingresar algún texto en español.")
         else:
             body = {"model": model_name, "text": in_text}
             started = time.perf_counter()

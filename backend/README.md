@@ -270,7 +270,9 @@ python -m uvicorn app:app --host 0.0.0.0 --port 8080
 
 Models are downloaded by default from HuggingFace, but they can also be loaded from disk. Some models can be downloaded straightforward, while others require an authorization process.
 
-#### Public models (no token needed)
+## Huggingface models for PyTorch
+
+### Public models (no token needed)
 
 ~~~bash
 # Choose a directory to keep the local models:
@@ -282,7 +284,7 @@ huggingface-cli download Helsinki-NLP/opus-mt-en-es \
   --local-dir-use-symlinks False
 ~~~
 
-#### Gated NLLB (token + license acceptance required)
+### Gated NLLB (token + license acceptance required)
 
 ~~~bash
 # Login & ensure you accepted the model terms on the model page first
@@ -293,6 +295,19 @@ huggingface-cli download facebook/nllb-200-distilled-600M \
   --local-dir ./hf_models/nllb-200-distilled-600M \
   --local-dir-use-symlinks False
 ~~~
+
+## Models for ctranslate2
+
+~~~bash
+# Create output dir for the converted CT2 model
+mkdir -p ./hf_models/ct2-opus-mt-es-en
+
+# Convert from HF -> CT2 (quantized, GPU-friendly)
+ct2-transformers-converter --model Helsinki-NLP/opus-mt-es-en \
+  --output_dir ./hf_models/ct2-opus-mt-es-en \
+  --quantization int8_float16 --force
+~~~  
+
 
 ### Try it (examples)
 

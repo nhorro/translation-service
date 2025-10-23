@@ -19,7 +19,7 @@ models:
     adapter: dummy
     params:
       fixed_response: "OK: dummy translation"
-      
+
   es-en-tiny:
     adapter: pytorch_hf
     params:
@@ -44,3 +44,13 @@ models:
       dtype: auto
       src_lang: spa_Latn
       tgt_lang: eng_Latn
+
+  es-en-ct2-local:
+    adapter: ctranslate2_local
+    params:
+      model_path: ./hf_models/ct2-opus-mt-es-en
+      tokenizer_id: Helsinki-NLP/opus-mt-es-en
+      device: auto            # auto → cuda if available, else cpu
+      compute_type: int8_float16
+      num_threads: 0          # 0 or omit → CT2 decides; set >0 to pin CPU threads
+
